@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mimcrm-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Root1234!
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  identity-api:
+    build: ./backend/src/IdentityService/IdentityService.API
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ConnectionStrings__Default: server=mysql;port=3306;database=mimcrm_identity;user=root;password=Root1234!
+    depends_on:
+      - mysql
+    ports:
+      - '5001:8080'
+
+  customer-api:
+    build: ./backend/src/CustomerService/CustomerService.API
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ConnectionStrings__Default: server=mysql;port=3306;database=mimcrm_customer;user=root;password=Root1234!
+    depends_on:
+      - mysql
+    ports:
+      - '5002:8080'
+
+  product-api:
+    build: ./backend/src/ProductService/ProductService.API
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ConnectionStrings__Default: server=mysql;port=3306;database=mimcrm_product;user=root;password=Root1234!
+    depends_on:
+      - mysql
+    ports:
+      - '5003:8080'
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - identity-api
+      - customer-api
+      - product-api
+    ports:
+      - '5173:5173'
+
+volumes:
+  mysql_data:
