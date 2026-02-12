@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Solution xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Project DefaultTargets="Build" Name="MimCRM" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+      <ProjectReference Include="..\..\Project1\Project1.csproj">
+        <Project>{project-guid-1}</Project>
+        <Name>Project1</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\..\Project2\Project2.csproj">
+        <Project>{project-guid-2}</Project>
+        <Name>Project2</Name>
+      </ProjectReference>
+    </ItemGroup>
+  </Project>
+</Solution>
